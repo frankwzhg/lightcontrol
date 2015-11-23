@@ -2,12 +2,12 @@
 #include <Mirf.h>
 #include <MirfHardwareSpiDriver.h>
 #include <MirfSpiDriver.h>
-
 int incoming[2];
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
+ 
 
   Mirf.cePin = 9;
   Mirf.csnPin = 10;
@@ -33,6 +33,7 @@ void loop() {
            };
   }
   adata = incoming[0];
+  Serial.println(adata);
   byte data[Mirf.payload];
 
   data[0] = adata & 0xFF;
@@ -41,6 +42,6 @@ void loop() {
   Mirf.setTADDR((byte *)"Rec01");
   Mirf.send(data);
   while(Mirf.isSending()){}
-  delay(20);
+  delay(2000);
 
 }
