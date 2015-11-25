@@ -14,8 +14,8 @@ void setup() {
   Mirf.spi = &MirfHardwareSpi;
   Mirf.init();
 
-  Mirf.setRADDR((byte *)"Send01");
-  Mirf.payload = sizeof(unsigned int);
+  Mirf.setTADDR((byte *)"Send01");
+  Mirf.payload = sizeof(int);
 
   Mirf.channel = 3;
   Mirf.config();
@@ -32,16 +32,20 @@ void loop() {
           incoming[i] = Serial.read();
            };
   }
-  adata = incoming[0];
+  int adata = 1;
   Serial.println(adata);
-  byte data[Mirf.payload];
+//  byte data[Mirf.payload];
+//  if(!Mirf.isSending() && Mirf.dataReady()){
+//    Mirf.setTADDR((byte *)"Rec01");
+    Mirf.send((byte *)&adata);
+//    delay(1000);
+//    }
+//  data[0] = adata & 0xFF;
+//  data[1] = adata >> 8;
 
-  data[0] = adata & 0xFF;
-  data[1] = adata >> 8;
-
-  Mirf.setTADDR((byte *)"Rec01");
-  Mirf.send(data);
-  while(Mirf.isSending()){}
-  delay(2000);
+//  Mirf.setTADDR((byte *)"Rec01");
+//  Mirf.send(data);
+//  while(Mirf.isSending()){}
+//  delay(2000);
 
 }
