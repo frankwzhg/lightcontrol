@@ -1,5 +1,20 @@
-#include <SPI.h>
+/*
+ * this programe is main control progame, that control all sub boad 
+ * attached to this boar. this programe recive all other client boad
+ * information and centor pc command, and forward this commande to 
+ * other client.
+ * 
+ * variable policy:(this policy only used by transfer information to 
+ * centrol control pc, not be used send command to client)
+ * all digital variable and single byte variable will add 100-900 as 
+ * lable. 100-200 will be used by centrol controler. 110-119 used by 
+ * light, for example 110 used by main light, 111 used by bath  light 
+ * 
+ * all analog varible will add 10000-20000 as lable. 10000 used by 
+ * main room, 11000 used by bath room
+ */
 
+#include <SPI.h>
 #include <nRF24L01.h>
 #include <Mirf.h>
 #include <MirfHardwareSpiDriver.h>
@@ -33,13 +48,6 @@ void loop() {
       Mirf.getData((byte *)&data);
      unsigned int adata = ((data[1]<<8) | data[0]);
       Serial.println(adata);
-//    Serial.print("receive data:");
-//      Serial.println(data[0]);
-//      Serial.println(data[1]);
-    
-//    delay(1000);
-    }
-//    delay(2000);
   if(Serial.available()>=2){
     //fill array by python
         for( int i = 0; i<2; i++){
@@ -64,15 +72,11 @@ void loop() {
   int message_list[]={message, data2};
  Mirf.setTADDR((byte *)"clie1");
   send_data(message_list[0]);
-//  Mirf.send((byte *)&message);
-//  while(Mirf.isSending()){};
   delay(10);
   Mirf.setTADDR((byte *)"clie9");
   delay(10);
   Mirf.setTADDR((byte *)"clie2");
   send_data(message_list[1]);
-//  Mirf.send((byte *)&data2);
-//  while(Mirf.isSending()){};
   delay(10);
   Mirf.setTADDR((byte *)"clie9"); 
 }
